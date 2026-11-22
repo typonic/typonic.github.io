@@ -1,0 +1,420 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Unit 3 Practice Test</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Layout concept: a lab-notebook worksheet. One column, element-tile motif, three screens: test, results, flashcards. */
+:root{
+  --bg:#F2F4F6; --surface:#FFFFFF; --ink:#13202B; --muted:#586977; --line:#D3DBE1;
+  --accent:#0A6C8C; --accent-ink:#FFFFFF; --tile:#E3EEF2;
+  --good:#1B7F4B; --good-bg:#E2F3EA; --bad:#B53A22; --bad-bg:#FBE8E3;
+  --font-display:"Space Grotesk",system-ui,sans-serif;
+  --font-body:"Inter",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F171E; --surface:#17222B; --ink:#E8EEF2; --muted:#93A4B2; --line:#2B3A46;
+    --accent:#52BAD9; --accent-ink:#06202A; --tile:#1C2E39;
+    --good:#5CCB8E; --good-bg:#12301F; --bad:#F28D76; --bad-bg:#3B1E18; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F171E; --surface:#17222B; --ink:#E8EEF2; --muted:#93A4B2; --line:#2B3A46;
+  --accent:#52BAD9; --accent-ink:#06202A; --tile:#1C2E39;
+  --good:#5CCB8E; --good-bg:#12301F; --bad:#F28D76; --bad-bg:#3B1E18; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:400 16px/1.5 var(--font-body);
+  padding-block:0 64px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:10}
+.wrap{max-width:760px;margin:0 auto}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.15}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+
+.brand{display:flex;align-items:center;gap:14px;padding-block:28px 8px}
+.tile{width:60px;height:68px;flex:none;border:2px solid var(--accent);background:var(--tile);border-radius:6px;padding:4px 6px;display:grid;grid-template-rows:auto 1fr auto;font-family:var(--font-mono);color:var(--ink)}
+.tile small{font-size:10px;color:var(--muted);line-height:1}
+.tile b{font:700 26px/1 var(--font-display);align-self:center;justify-self:center}
+.brand h1{font-size:clamp(1.6rem,5vw,2.2rem)}
+.brand p{margin:2px 0 0;color:var(--muted);font-size:.95rem}
+
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:20px}
+.intro{margin-top:18px;display:grid;gap:16px}
+.intro ul{margin:0;padding-left:1.1em;color:var(--muted)}
+.intro li{margin:4px 0}
+.btn{appearance:none;border:1.5px solid var(--accent);background:var(--accent);color:var(--accent-ink);padding:12px 20px;border-radius:8px;font-weight:600;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--accent)}
+.btn.bad{border-color:var(--bad);color:var(--bad);background:transparent}
+.btn.good{border-color:var(--good);background:var(--good);color:var(--bg)}
+.btn:hover{filter:brightness(1.07)}
+.btn[disabled]{opacity:.5;cursor:default}
+.row{display:flex;flex-wrap:wrap;gap:10px}
+
+.progress{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:10px 8px;margin-top:6px}
+.progress .meta{display:flex;justify-content:space-between;font:500 .85rem var(--font-mono);color:var(--muted)}
+.track{height:6px;border-radius:3px;background:var(--line);margin-top:6px;overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s}
+
+.part{margin-top:30px}
+.part h2{font-size:1.35rem}
+.part .note{color:var(--muted);margin:4px 0 0;font-size:.92rem}
+.qs{display:grid;gap:12px;margin-top:14px}
+.q{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:16px;min-width:0}
+.q .num{font:500 .78rem var(--font-mono);color:var(--muted);letter-spacing:.06em;text-transform:uppercase}
+.q .prompt{margin:4px 0 12px;font-weight:500;white-space:pre-line}
+.opts{display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--line);border-radius:8px;padding:10px 12px;cursor:pointer}
+.opt:has(input:checked){border-color:var(--accent);background:var(--tile)}
+.opt input{margin-top:4px;accent-color:var(--accent);flex:none}
+.opt span{min-width:0}
+.fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.field{display:grid;gap:4px;font-size:.82rem;color:var(--muted);min-width:0}
+.field.wide{grid-column:1/-1}
+input[type=number],input[type=text],select{font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px;width:100%;min-width:0}
+.hint{font-size:.82rem;color:var(--muted);margin:-4px 0 10px}
+
+.submit{margin-top:28px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.submit .warn{color:var(--bad);font-size:.9rem}
+
+.score{display:grid;gap:6px;margin-top:18px}
+.score .big{font:700 clamp(3rem,14vw,4.6rem)/1 var(--font-display)}
+.score .big span{font-size:.4em;color:var(--muted);font-weight:500}
+.breakdown{display:grid;gap:10px;margin-top:18px}
+.brow{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:4px 12px;font-size:.92rem}
+.brow .bt{grid-column:1/-1;height:8px;border-radius:4px;background:var(--bad-bg);overflow:hidden}
+.brow .bt i{display:block;height:100%;background:var(--good)}
+.brow b{font-family:var(--font-mono);font-weight:500}
+.missed{display:grid;gap:12px;margin-top:14px}
+.m{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:8px;padding:14px 16px;min-width:0}
+.m .pp{font:500 .75rem var(--font-mono);color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.m .mq{font-weight:500;margin:2px 0 8px;white-space:pre-line}
+.m dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:4px 12px;font-size:.92rem}
+.m dt{color:var(--muted)}
+.m dd{margin:0;white-space:pre-line}
+.m .yours{color:var(--bad)}
+.m .right{color:var(--good);font-weight:600}
+.m .why{margin:8px 0 0;font-size:.88rem;color:var(--muted)}
+
+.deckmeta{display:flex;justify-content:space-between;font:500 .85rem var(--font-mono);color:var(--muted);margin-top:18px}
+.card{display:block;width:100%;text-align:left;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:26px 22px;min-height:260px;cursor:pointer;margin-top:10px}
+.card.back{border-color:var(--accent);background:var(--tile)}
+.card .side{font:500 .75rem var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.card .face{font:500 1.25rem/1.4 var(--font-display);margin:10px 0 0;white-space:pre-line}
+.card .ans{font:600 1.25rem/1.4 var(--font-display);color:var(--accent);margin:10px 0 0;white-space:pre-line}
+.card .ex{margin:14px 0 0;color:var(--muted);font-size:.95rem}
+.card .tap{margin-top:22px;font-size:.85rem;color:var(--muted)}
+.card .you{margin-top:12px;font-size:.88rem;color:var(--bad)}
+.card:not(.back) .face{animation:rise .2s ease-out}
+.card.back .ans{animation:rise .2s ease-out}
+@keyframes rise{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.card .face,.card .ans{animation:none}.track i{transition:none}}
+.cardbtns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}
+.done{text-align:center;padding:36px 20px}
+.done h2{font-size:1.8rem}
+.done p{color:var(--muted)}
+.done .row{justify-content:center;margin-top:16px}
+.link{background:none;border:0;color:var(--accent);padding:0;cursor:pointer;font-weight:600;text-decoration:underline}
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+/* ---------- question builders ---------- */
+const mc=(prompt,options,answer,explain)=>({type:'mc',prompt,options,answer,explain});
+const tf=(prompt,answer,explain)=>({type:'tf',prompt,options:['True','False'],answer,explain});
+const num=(prompt,answer,explain)=>({type:'num',prompt,answer,explain});
+const txt=(prompt,show,accepted,explain)=>({type:'text',prompt,show,accepted,explain});
+const multi=(prompt,options,answer,explain)=>({type:'multi',prompt,options,answer,explain});
+const particle=(name,c,m,l,explain)=>({type:'grid',prompt:name+": complete the charge, mass and location.",
+  fields:[
+    {label:'Charge',kind:'select',options:['+1 (positive)','0 (neutral)','-1 (negative)'],answer:c},
+    {label:'Mass',kind:'select',options:['1 amu','Almost 0 amu'],answer:m},
+    {label:'Location',kind:'select',options:['Nucleus','Electron cloud'],answer:l}],explain});
+const elem=(name,an,am,n)=>({type:'grid',
+  prompt:name+" (neutral atom). Use the periodic table.",hint:"Round the atomic mass to a whole number before finding neutrons.",
+  fields:[
+    {label:'Atomic number',kind:'num',answer:an},
+    {label:'Atomic mass',kind:'num',answer:am,tol:0.5,show:Math.round(am)+' ('+am.toFixed(2)+')'},
+    {label:'Protons',kind:'num',answer:an},
+    {label:'Electrons',kind:'num',answer:an},
+    {label:'Neutrons',kind:'num',answer:n}],
+  explain:"Protons = electrons = atomic number ("+an+"). Neutrons = rounded atomic mass ("+Math.round(am)+") minus atomic number = "+n+"."});
+const pos=(name,per,grp,val)=>({type:'grid',prompt:name+": read its place on the periodic table.",
+  fields:[
+    {label:'Period',kind:'num',answer:per},
+    {label:'Group',kind:'num',answer:grp},
+    {label:'Energy levels',kind:'num',answer:per},
+    {label:'Valence electrons',kind:'num',answer:val}],
+  explain:name+" is in Period "+per+", Group "+grp+". Energy levels equal the period number. Valence electrons: "+val+"."});
+
+const groupOpts=[
+ "Group 1; 1 valence electron; soft, shiny, very reactive metals",
+ "Group 2; 2 valence electrons; reactive metals",
+ "Group 17; 7 valence electrons; very reactive non-metals",
+ "Group 18; full outer energy level; unreactive gases",
+ "Along the staircase; properties of both metals and non-metals"];
+const propOpts=["Shiny","Dull","Good conductor of heat and electricity","Brittle","Malleable (can be hammered into sheets)","Ductile (can be pulled into wires)","Poor conductor of heat and electricity"];
+
+const P=[
+{title:"Part 1: Vocabulary",note:"Pick the best answer.",qs:[
+ mc("The dense center of an atom that contains the protons and neutrons is the:",["electron cloud","isotope","nucleus","period"],2,"The nucleus holds the protons and neutrons at the center of the atom."),
+ mc("Atoms of the same element that have different numbers of neutrons are called:",["isotopes","halogens","metalloids","groups"],0,"Isotopes have the same number of protons but different numbers of neutrons."),
+ mc("The number of protons in an atom is its:",["mass number","atomic mass unit","valence electron","atomic number"],3,"The atomic number is the number of protons and identifies the element."),
+ mc("A horizontal row on the periodic table is called a:",["period","group","energy level","radioactivity"],0,"Periods are horizontal rows. Groups are vertical columns."),
+ mc("Electrons in the outermost energy level are called:",["neutrons","protons","valence electrons","isotopes"],2,"Valence electrons are the electrons in the outermost energy level."),
+ mc("The release of energy and particles from an unstable nucleus is called:",["mass number","radioactivity","atomic number","valence"],1,"Radioactivity is the release of energy and particles from an unstable nucleus."),
+ mc("What is the correct unit for the mass of an atom?",["liter","kilometer","newton","atomic mass unit (amu)"],3,"Atoms are so small that their mass is measured in atomic mass units (amu)."),
+ mc("The region around the nucleus where electrons are most likely to be found is the:",["electron cloud","nucleus","period","group"],0,"Electrons are found in the electron cloud, outside the nucleus.")
+]},
+{title:"Part 2: Particles and the atom model",note:"Mass, charge and location of the three particles, and the current model.",qs:[
+ particle("Proton",0,0,0,"A proton is positive (+1), has a mass of 1 amu, and is in the nucleus."),
+ particle("Neutron",1,0,0,"A neutron has no charge, has a mass of 1 amu, and is in the nucleus."),
+ particle("Electron",2,1,1,"An electron is negative (-1), has almost no mass, and is in the electron cloud."),
+ mc("Which two particles make up most of an atom's mass?",["Protons and electrons","Neutrons and electrons","Protons and neutrons","Electrons only"],2,"Protons and neutrons each have a mass of 1 amu. Electrons have almost none."),
+ tf("In the current model of the atom, electrons travel in fixed circular paths around the nucleus.",1,"False. The current model has an electron cloud. We can only say where electrons are most likely to be."),
+ num("A neutral atom has 9 protons. How many electrons does it have?",9,"In a neutral atom the number of electrons equals the number of protons."),
+ mc("What is the overall charge of the nucleus, and why?",["Positive, because protons are positive and neutrons have no charge","Negative, because electrons are in the nucleus","Neutral, because protons and electrons cancel out","Positive, because neutrons are positive"],0,"The nucleus contains only protons (+) and neutrons (0), so it is positive."),
+ mc("Which statement describes the current model of the atom?",["A tiny, dense nucleus of protons and neutrons, with electrons found in a cloud around it","Electrons orbit the nucleus in fixed circular paths like planets","A solid ball of positive charge with electrons scattered inside it","A nucleus made of electrons surrounded by protons"],0,"The current model has a nucleus (protons and neutrons) surrounded by an electron cloud.")
+]},
+{title:"Part 3: Mass number and the periodic table",note:"Keep a periodic table handy for the tables.",qs:[
+ mc("Which is the formula for mass number?",["Mass number = protons + electrons","Mass number = protons + neutrons","Mass number = neutrons + electrons","Mass number = protons - neutrons"],1,"Mass number = protons + neutrons. Electrons are not counted."),
+ num("An atom has 7 protons, 7 neutrons, and 7 electrons. What is its mass number?",14,"7 + 7 = 14. Electrons are not counted."),
+ num("An atom has 15 protons, 16 neutrons, and 15 electrons. What is its mass number?",31,"15 + 16 = 31."),
+ elem("Oxygen",8,16.00,8),
+ elem("Sodium",11,22.99,12),
+ elem("Aluminum",13,26.98,14),
+ elem("Calcium",20,40.08,20),
+ pos("Magnesium",3,2,2),
+ pos("Chlorine",3,17,7),
+ pos("Lithium",2,1,1),
+ pos("Neon",2,18,8),
+ pos("Potassium",4,1,1)
+]},
+{title:"Part 4: Isotopes",note:"What stays the same and what changes.",qs:[
+ mc("Which is the best definition of an isotope?",["Atoms of the same element with the same number of protons but different numbers of neutrons","Atoms of different elements with the same mass number","Atoms with the same number of neutrons but different numbers of protons","Atoms of the same element with different numbers of protons"],0,"Isotopes are atoms of the same element (same protons) with different numbers of neutrons."),
+ mc("Atom A has 6 protons and 6 neutrons. Atom B has 6 protons and 7 neutrons. Are they isotopes of the same element?",["Yes. Both have 6 protons, so both are carbon. Their mass numbers are 12 and 13.","No. They have different numbers of neutrons, so they are different elements.","Yes. Their mass numbers are 12 and 7.","No. Isotopes must have the same mass number."],0,"Same protons means same element. Different neutrons means different mass numbers (12 and 13)."),
+ multi("Select everything that is the SAME for isotopes of the same element.",["Number of protons","Number of neutrons","Atomic number","Mass number","Element name"],[0,2,4],"Protons, atomic number and the element are the same. Neutrons and mass number differ."),
+ mc("What is DIFFERENT for isotopes of the same element?",["Number of protons","Number of neutrons (which also changes the mass number)","Atomic number","Element name"],1,"Isotopes differ in neutrons, which changes the mass number and atomic mass."),
+ {type:'grid',prompt:"Lithium has an atomic number of 3. How many neutrons are in each isotope?",
+  fields:[{label:'Lithium-6 neutrons',kind:'num',answer:3},{label:'Lithium-7 neutrons',kind:'num',answer:4}],
+  explain:"Neutrons = mass number - atomic number. Lithium-6: 6 - 3 = 3. Lithium-7: 7 - 3 = 4."}
+]},
+{title:"Part 5: Organization and unknown elements",note:"Use the periodic table. Type the element name or its symbol.",qs:[
+ mc("How is the periodic table organized?",["By increasing atomic number, in periods (rows) and groups (columns)","Alphabetically by element name","By number of neutrons","By the year each element was discovered"],0,"Elements are arranged by increasing atomic number into periods (rows) and groups (columns)."),
+ mc("What do elements in the same period have in common?",["The same number of energy levels","The same number of valence electrons","The same atomic number","The same number of neutrons"],0,"Elements in the same period have the same number of energy levels."),
+ mc("What do elements in the same group have in common?",["The same number of valence electrons and similar properties","The same number of energy levels","The same atomic number","The same mass number"],0,"Elements in the same group have the same number of valence electrons, so they have similar properties."),
+ mc("What happens to the atomic number as you move left to right across a period?",["It increases by one for each element","It decreases by one for each element","It stays the same","It doubles for each element"],0,"Atomic number increases by one for each element from left to right."),
+ txt("Name the element: 2 energy levels and 6 valence electrons.","Oxygen (O)",["oxygen","o"],"Period 2, Group 16 (6 valence electrons) is oxygen."),
+ txt("Name the element: 3 energy levels and 1 valence electron.","Sodium (Na)",["sodium","na"],"Period 3, Group 1 is sodium."),
+ txt("Name the element: a noble gas with 2 energy levels.","Neon (Ne)",["neon","ne"],"Period 2, Group 18 is neon."),
+ txt("Name the element: a halogen with 3 energy levels.","Chlorine (Cl)",["chlorine","cl"],"Period 3, Group 17 is chlorine."),
+ txt("Name the element: an alkaline earth metal with 2 energy levels.","Beryllium (Be)",["beryllium","be"],"Period 2, Group 2 is beryllium."),
+ txt("Name the element: a Period 3 element with 4 valence electrons.","Silicon (Si)",["silicon","si"],"Period 3, Group 14 (4 valence electrons) is silicon."),
+ txt("Name the element: atomic number 12.","Magnesium (Mg)",["magnesium","mg"],"Atomic number 12 is magnesium.")
+]},
+{title:"Part 6: Metals, non-metals and the named groups",note:"Properties and group names.",qs:[
+ {type:'grid',prompt:"Match each group to its description.",
+  fields:[
+   {label:'Alkali metals',kind:'select',options:groupOpts,answer:0},
+   {label:'Alkaline earth metals',kind:'select',options:groupOpts,answer:1,},
+   {label:'Halogens',kind:'select',options:groupOpts,answer:2},
+   {label:'Noble gases',kind:'select',options:groupOpts,answer:3},
+   {label:'Metalloids',kind:'select',options:groupOpts,answer:4}],wide:true,
+  explain:"Alkali metals: Group 1. Alkaline earth: Group 2. Halogens: Group 17. Noble gases: Group 18. Metalloids: along the staircase."},
+ multi("Select all properties of METALS.",propOpts,[0,2,4,5],"Metals are shiny, good conductors, malleable and ductile."),
+ multi("Select all properties of NON-METALS.",propOpts,[1,3,6],"Non-metals are dull, brittle and poor conductors."),
+ mc("Where are metals and non-metals on the periodic table?",["Metals on the left and middle; non-metals on the right","Metals on the right; non-metals on the left","Metals along the staircase; non-metals on the left","Metals in the top row only; non-metals in the bottom rows"],0,"Metals fill the left and middle. Non-metals are on the right. Metalloids sit along the staircase between them."),
+ mc("Why are noble gases unreactive?",["Their outermost energy level is full","They have only one valence electron","They have no electrons","They are all metals"],0,"A full outer energy level means they do not need to gain or lose electrons."),
+ mc("Which is more reactive, an alkali metal or an alkaline earth metal?",["Alkali metal, because it has only 1 valence electron to lose","Alkaline earth metal, because it has 2 valence electrons","They are equally reactive","Neither is reactive"],0,"Alkali metals (Group 1) lose their single valence electron easily, so they are more reactive.")
+]}
+];
+
+const Q=[];
+P.forEach((p,pi)=>p.qs.forEach(q=>{q.part=pi;q.n=Q.length+1;Q.push(q)}));
+
+/* ---------- grading ---------- */
+function fieldOk(f,v){
+  if(v===null||v==='')return false;
+  if(f.kind==='select')return Number(v)===f.answer;
+  const x=parseFloat(v);return !isNaN(x)&&Math.abs(x-f.answer)<=(f.tol||0);
+}
+function isOk(q,r){
+  if(q.type==='mc'||q.type==='tf')return r===q.answer;
+  if(q.type==='num'){const x=parseFloat(r);return !isNaN(x)&&x===q.answer;}
+  if(q.type==='text')return q.accepted.includes(String(r).trim().toLowerCase());
+  if(q.type==='multi')return r.length===q.answer.length&&q.answer.every(a=>r.includes(a));
+  if(q.type==='grid')return q.fields.every((f,j)=>fieldOk(f,r[j]));
+}
+function isBlank(q,r){
+  if(q.type==='mc'||q.type==='tf')return r===null;
+  if(q.type==='multi')return r.length===0;
+  if(q.type==='grid')return r.some(v=>v==='');
+  return r==='';
+}
+const fAns=f=>f.kind==='select'?f.options[f.answer]:(f.show||String(f.answer));
+function correctText(q){
+  if(q.type==='mc'||q.type==='tf')return q.options[q.answer];
+  if(q.type==='multi')return q.answer.map(i=>q.options[i]).join('\n');
+  if(q.type==='num')return String(q.answer);
+  if(q.type==='text')return q.show;
+  return q.fields.map(f=>f.label+': '+fAns(f)).join('\n');
+}
+function yourText(q,r){
+  if(isBlank(q,r)&&q.type!=='grid'&&q.type!=='multi')return '(left blank)';
+  if(q.type==='mc'||q.type==='tf')return q.options[r];
+  if(q.type==='multi')return r.length?r.map(i=>q.options[i]).join('\n'):'(left blank)';
+  if(q.type==='grid')return q.fields.map((f,j)=>f.label+': '+(r[j]===''?'(blank)':(f.kind==='select'?f.options[r[j]]:r[j]))).join('\n');
+  return String(r);
+}
+
+/* ---------- rendering ---------- */
+const app=document.getElementById('app');
+let responses=[],results=[],queue=[],mastered=0,flipped=false,deckSize=0,confirmBlank=false;
+
+const brand=()=>`<div class="brand"><div class="tile" aria-hidden="true"><small>10</small><b>Ne</b><small>20.18</small></div><div><h1>Unit 3 Practice Test</h1><p>Atoms and the periodic table</p></div></div>`;
+function toTop(){window.scrollTo(0,0)}
+
+function showStart(){
+  app.innerHTML=brand()+`<div class="panel intro">
+    <div><h2>Before you start</h2>
+    <ul><li>${Q.length} questions in 6 parts, matching the Unit 3 study guide.</li>
+    <li>Keep a periodic table nearby for Parts 3 and 5.</li>
+    <li>You see your score and every missed question when you submit.</li>
+    <li>Missed questions turn into flashcards you can study right away.</li></ul></div>
+    <div class="row"><button class="btn" id="go">Start the test</button></div></div>`;
+  document.getElementById('go').onclick=showTest;
+  toTop();
+}
+
+function qHTML(q){
+  let body='';
+  if(q.type==='mc'||q.type==='tf'){
+    body='<div class="opts">'+q.options.map((o,k)=>`<label class="opt"><input type="radio" name="q${q.n}" value="${k}"><span>${esc(o)}</span></label>`).join('')+'</div>';
+  }else if(q.type==='multi'){
+    body='<div class="opts">'+q.options.map((o,k)=>`<label class="opt"><input type="checkbox" name="q${q.n}" value="${k}"><span>${esc(o)}</span></label>`).join('')+'</div>';
+  }else if(q.type==='num'){
+    body=`<input type="number" inputmode="decimal" step="any" id="q${q.n}" aria-label="Your answer" placeholder="Number">`;
+  }else if(q.type==='text'){
+    body=`<input type="text" id="q${q.n}" autocomplete="off" autocapitalize="none" aria-label="Your answer" placeholder="Element name or symbol">`;
+  }else{
+    body='<div class="fields">'+q.fields.map((f,j)=>{
+      const id=`q${q.n}f${j}`;
+      const ctl=f.kind==='select'
+        ?`<select id="${id}"><option value="">Choose</option>${f.options.map((o,k)=>`<option value="${k}">${esc(o)}</option>`).join('')}</select>`
+        :`<input type="number" inputmode="decimal" step="any" id="${id}">`;
+      return `<label class="field${q.wide?' wide':''}"><span>${esc(f.label)}</span>${ctl}</label>`;
+    }).join('')+'</div>';
+  }
+  return `<div class="q"><div class="num">Question ${q.n}</div><p class="prompt">${esc(q.prompt)}</p>${q.hint?`<p class="hint">${esc(q.hint)}</p>`:''}${body}</div>`;
+}
+
+function showTest(){
+  confirmBlank=false;
+  app.innerHTML=brand()+`<div class="progress"><div class="meta"><span id="pc">0 of ${Q.length} answered</span><span>Unit 3</span></div><div class="track"><i id="pb"></i></div></div>`+
+   P.map((p,pi)=>`<section class="part"><h2>${esc(p.title)}</h2><p class="note">${esc(p.note)}</p><div class="qs">${p.qs.map(qHTML).join('')}</div></section>`).join('')+
+   `<div class="submit"><button class="btn" id="sub">Submit test</button><span class="warn" id="warn"></span></div>`;
+  document.getElementById('sub').onclick=submit;
+  toTop();
+}
+function readAll(){
+  return Q.map(q=>{
+    const i=q.n;
+    if(q.type==='mc'||q.type==='tf'){const e=document.querySelector(`input[name="q${i}"]:checked`);return e?Number(e.value):null;}
+    if(q.type==='multi')return [...document.querySelectorAll(`input[name="q${i}"]:checked`)].map(e=>Number(e.value));
+    if(q.type==='grid')return q.fields.map((f,j)=>document.getElementById(`q${i}f${j}`).value.trim());
+    return document.getElementById('q'+i).value.trim();
+  });
+}
+function updateProgress(){
+  const pc=document.getElementById('pc'),pb=document.getElementById('pb');
+  if(!pc)return;
+  const rs=readAll();const done=Q.filter((q,i)=>!isBlank(q,rs[i])).length;
+  pc.textContent=done+' of '+Q.length+' answered';
+  pb.style.width=(done/Q.length*100)+'%';
+  if(confirmBlank){confirmBlank=false;document.getElementById('sub').textContent='Submit test';document.getElementById('warn').textContent='';}
+}
+app.addEventListener('input',updateProgress);
+app.addEventListener('change',updateProgress);
+
+function submit(){
+  const rs=readAll();
+  const blanks=Q.filter((q,i)=>isBlank(q,rs[i])).length;
+  if(blanks&&!confirmBlank){
+    confirmBlank=true;
+    document.getElementById('sub').textContent='Submit anyway';
+    document.getElementById('warn').textContent=blanks+' question'+(blanks>1?'s are':' is')+' blank and will count as missed.';
+    return;
+  }
+  responses=rs;
+  results=Q.map((q,i)=>isOk(q,rs[i]));
+  showResults();
+}
+
+function showResults(){
+  const total=Q.length,right=results.filter(Boolean).length,pct=Math.round(right/total*100);
+  const missed=Q.filter((q,i)=>!results[i]);
+  const msg=pct===100?"Perfect score. You are ready for Monday."
+    :pct>=90?"Strong. Review the few you missed and you are set."
+    :pct>=75?"Solid. The missed questions below show where to focus."
+    :pct>=60?"Getting there. Work through the flashcards, then retake the test."
+    :"Keep going. Start with the flashcards, then retake the test.";
+  const parts=P.map((p,pi)=>{
+    const idx=Q.map((q,i)=>q.part===pi?i:-1).filter(i=>i>=0);
+    const r=idx.filter(i=>results[i]).length;
+    return `<div class="brow"><span>${esc(p.title)}</span><b>${r} / ${idx.length}</b><div class="bt"><i style="width:${r/idx.length*100}%"></i></div></div>`;
+  }).join('');
+  const list=missed.map(q=>{
+    const i=q.n-1;
+    return `<div class="m"><div class="pp">${esc(P[q.part].title)} · Question ${q.n}</div><div class="mq">${esc(q.prompt)}</div>
+    <dl><dt>You</dt><dd class="yours">${esc(yourText(q,responses[i]))}</dd><dt>Correct</dt><dd class="right">${esc(correctText(q))}</dd></dl>
+    <p class="why">${esc(q.explain)}</p></div>`;
+  }).join('');
+  app.innerHTML=brand()+`<div class="panel"><h2>Your results</h2>
+    <div class="score"><div class="big">${right}<span> / ${total}</span></div><div>${pct}%. ${esc(msg)}</div></div>
+    <div class="row" style="margin-top:18px">
+      ${missed.length?`<button class="btn" id="study">Study ${missed.length} missed as flashcards</button>`:''}
+      <button class="btn ghost" id="retake">Retake the test</button></div>
+    <div class="breakdown">${parts}</div></div>`+
+    (missed.length?`<section class="part"><h2>Questions you missed</h2><div class="missed">${list}</div></section>`:'');
+  const s=document.getElementById('study');if(s)s.onclick=startDeck;
+  document.getElementById('retake').onclick=showTest;
+  toTop();
+}
+
+/* ---------- flashcards ---------- */
+function startDeck(){
+  queue=Q.filter((q,i)=>!results[i]).map(q=>q.n-1);
+  deckSize=queue.length;mastered=0;flipped=false;showCard();
+}
+function showCard(){
+  if(!queue.length){
+    app.innerHTML=brand()+`<div class="panel done"><h2>Deck cleared</h2><p>You marked all ${deckSize} missed cards as learned.</p>
+      <div class="row"><button class="btn" id="again">Retake the test</button><button class="btn ghost" id="back">Back to results</button></div></div>`;
+    document.getElementById('again').onclick=showTest;
+    document.getElementById('back').onclick=showResults;toTop();return;
+  }
+  const i=queue[0],q=Q[i];
+  const first=!flipped;
+  const face=first
+    ?`<div class="side">Question · ${esc(P[q.part].title)}</div><p class="face">${esc(q.prompt)}</p>${q.hint?`<p class="ex">${esc(q.hint)}</p>`:''}<div class="tap">Tap the card to see the answer</div>`
+    :`<div class="side">Answer</div><p class="ans">${esc(correctText(q))}</p><p class="ex">${esc(q.explain)}</p><div class="you">You answered: ${esc(yourText(q,responses[i])).replace(/\n/g,' / ')}</div>`;
+  app.innerHTML=brand()+`<div class="deckmeta"><span>${queue.length} left</span><span>${mastered} of ${deckSize} learned</span></div>
+    <button class="card${first?'':' back'}" id="card" aria-label="${first?'Show answer':'Answer shown'}">${face}</button>
+    ${first?`<div class="row" style="margin-top:12px"><button class="btn" id="flip">Show answer</button><button class="link" id="exit">Back to results</button></div>`
+    :`<div class="cardbtns"><button class="btn bad" id="again">Still learning</button><button class="btn good" id="got">Got it</button></div>`}`;
+  const flip=()=>{flipped=true;showCard();};
+  if(first){document.getElementById('card').onclick=flip;document.getElementById('flip').onclick=flip;document.getElementById('exit').onclick=showResults;}
+  else{
+    document.getElementById('got').onclick=()=>{queue.shift();mastered++;flipped=false;showCard();};
+    document.getElementById('again').onclick=()=>{queue.push(queue.shift());flipped=false;showCard();};
+  }
+}
+
+showStart();
+</script>
+
+</body></html>
